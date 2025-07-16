@@ -36,17 +36,21 @@
             <div class="login-right">
                 <h2>Access to the platform</h2>
                 <p>Enter your details below</p>
-                <form action="#" method="POST">
+                <form action="{{ url('/login') }}" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <input type="text" name="email" placeholder="Email or Username" required>
+                        <input type="text" name="username" placeholder="Email or Username" required>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" placeholder="Password" required>
                     </div>
                     <button type="submit" class="login-btn">Log In</button>
-                    <div class="forgot-password">
-                        <a href="#">Forgot Password</a>
-                    </div>
+
+                    @if ($errors->any())
+                        <div class="error-message">
+                            {{ $errors->first('error') }}
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>
