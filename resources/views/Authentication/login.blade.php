@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Link to your external CSS -->
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -17,7 +21,7 @@
                     <h1>
                         <span class="bicol">BICOL</span> <span class="university">UNIVERSITY</span>
                     </h1>
-                    <p>Knowledge-Based Repository System</p>
+                    <p>Information and File Management System</p>
                 </div>
             </div>
         </div>
@@ -27,7 +31,7 @@
         <div class="login-container">
             <div class="login-left">
                 <div class="branding">
-                    <img src="images/BU logo-trans.png" alt="BU Logo" class="branding-logo">
+                    <img src="{{ asset('images/BU logo-trans.png') }}" alt="Bicol University Logo" class="logo">
                     <h1><span style="color: #f7941e;">iFiLMS</span></h1>
                     <p>Centralized Web-Based <br>Information and File Management System</p>
                 </div>
@@ -46,8 +50,12 @@
                     </div>
                     <button type="submit" class="login-btn">Log In</button>
 
+                    <div class="text-end mt-2">
+                        <a href="{{ route('staff.password.request') }}" class="text-decoration-none text-primary">Forgot Password?</a>
+                    </div>
+
                     @if ($errors->any())
-                        <div class="error-message">
+                        <div class="error-message" id="login-error-message" style="display:none;">
                             {{ $errors->first('error') }}
                         </div>
                     @endif
@@ -55,6 +63,15 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Alert -->
+    <div class="modal-overlay" id="unauthorizedModal">
+        <div class="modal-content">
+            <h2>Access Denied</h2>
+            <p>Authorized personnel Only.</p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -79,5 +96,19 @@
             </div>
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function closeModal() {
+            document.getElementById('unauthorizedModal').style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const errorDiv = document.getElementById('login-error-message');
+            if (errorDiv) {
+                document.getElementById('unauthorizedModal').style.display = 'flex';
+            }
+        });
+    </script>
 </body>
 </html>

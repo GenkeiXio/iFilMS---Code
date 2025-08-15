@@ -11,7 +11,7 @@ class StaffAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('login');
+        return view('Authentication.login');
     }
 
     public function login(Request $request)
@@ -34,6 +34,6 @@ class StaffAuthController extends Controller
     public function logout()
     {
         Auth::guard('staff')->logout();
-        return redirect('/login');
+        return redirect('login');
     }
 }

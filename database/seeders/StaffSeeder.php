@@ -11,15 +11,15 @@ class StaffSeeder extends Seeder
     public function run()
     {
         Staff::create([
-            'name' => 'Prince Louis',
-            'username' => 'pl@bicol-u.edu.ph',
-            'password' => Hash::make('Corgi_1101'),
+            'name' => 'Prince Louis Jaylo',
+            'username' => 'jayloprincelouis123@gmail.com',
+            'password' => Hash::make('plmj1101'),
         ]);
-
-        Staff::create([
-            'name' => 'Prince Jaylo',
-            'username' => 'plmj@bicol-u.edu.ph',
-            'password' => Hash::make('jaylo1101'),
+        
+        staff::create([
+            'name' => 'Prince Louis',
+            'username' => 'plmj2022-6325-62187@bicol-u.edu.ph',
+            'password' => Hash::make('plmj0121')
         ]);
     }
 }

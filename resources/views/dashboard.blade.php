@@ -48,9 +48,9 @@
           <i data-lucide="chevron-down" class="transition-all duration-300" id="transcriptionsChevron"></i>
         </button>
         <ul id="transcriptionsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-          <li>Academic Council</li>
-          <li>Administrative Council</li>
-          <li>Board Meetings</li>
+          <li><a href="{{ route('transcriptions.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
+          <li><a href="{{ route('transcriptions.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
+          <li><a href="{{ route('transcriptions.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
         </ul>
       </div>
 
@@ -60,16 +60,31 @@
           <i data-lucide="chevron-down" class="transition-all duration-300" id="minutesChevron"></i>
         </button>
         <ul id="minutesMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-          <li>Academic Council</li>
-          <li>Administrative Council</li>
-          <li>Board Meetings</li>
+          <li><a href="{{ route('minutes.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
+          <li><a href="{{ route('minutes.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
+          <li><a href="{{ route('minutes.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
         </ul>
       </div>
 
+      <div>
+        <button onclick="toggleMenu('excerptsMenu')" 
+          class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
+          <span class="flex items-center gap-2"><i data-lucide="book-open-text"></i> Excerpts</span>
+          <i data-lucide="chevron-down" class="transition-all duration-300" id="excerptsChevron"></i>
+        </button>
+        <ul id="excerptsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
+          <li><a href="{{ route('excerpts.board') }}" class="hover:underline">Board Meetings</a></li>
+        </ul>
+      </div>
+
+
       <!-- Others -->
-      <button class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100"><i data-lucide="book-open-text"></i> Excerpts</button>
-      <button class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100"><i data-lucide="badge-check"></i> Secretary's Certification</button>
-      <button class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100"><i data-lucide="file-text"></i> Referendum</button>
+      <a href="{{ route('secretary-certification.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+        <i data-lucide="badge-check"></i> Secretary's Certification
+      </a>
+      <a href="{{ route('referendum.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+        <i data-lucide="file-text"></i> Referendum
+      </a>
 
       <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-3 text-blue-500 mt-4">
         <i data-lucide="log-out"></i> LogOut
@@ -96,9 +111,6 @@
 
           <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
         </div>
-
-        <i data-lucide="user" class="cursor-pointer"></i>
-        <i data-lucide="bell" class="cursor-pointer"></i>
 
         <!-- Toggle Dark Mode -->
         <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
