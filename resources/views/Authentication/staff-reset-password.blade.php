@@ -16,6 +16,13 @@
             justify-content: center;
             align-items: center;
         }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;   /* make sure it stretches */
+        }
         .card {
             border-radius: 1rem;
             max-width: 500px;
@@ -28,6 +35,11 @@
             background-color: #f7941e;
             color: white;
             border-radius: .5rem;
+        }
+
+        .btn-custom:hover{
+            background-color: lightblue;
+            color: black;
         }
     </style>
 </head>

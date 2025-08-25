@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>iFiLMS Transcriptions</title>
+  <title>iFiLMS Categories</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,55 +60,6 @@
 
           <hr class="my-3">
 
-          <div>
-            <button onclick="toggleMenu('transcriptionsMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="captions"></i> Transcriptions</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="transcriptionsChevron"></i>
-            </button>
-            <ul id="transcriptionsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('transcriptions.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <button onclick="toggleMenu('minutesMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="clock"></i> Meeting Minutes</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="minutesChevron"></i>
-            </button>
-            <ul id="minutesMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('minutes.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('minutes.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('minutes.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <button onclick="toggleMenu('excerptsMenu')" 
-                class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="book-open-text"></i> Excerpts</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="excerptsChevron"></i>
-            </button>
-            <ul id="excerptsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('excerpts.board') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <a href="{{ route('secretary-certification.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="badge-check"></i> Secretary's Certification
-          </a>
-
-          <a href="{{ route('referendum.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="file-text"></i> Referendum
-          </a>
-
-          <a href="{{ route('board-resolution.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="file-text"></i> Board Resolution
-          </a>
-
-          <hr class="my-3">
-
           <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-3 text-gray-700 dark:text-gray-100">
             <i data-lucide="log-out"></i> LogOut
           </a>
@@ -121,7 +72,7 @@
       <!-- Topbar -->
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-3 text-lg font-semibold">
-            <i data-lucide="folder-open"></i> Transcriptions
+            <i data-lucide="folder-open"></i> Categories
           </div>
 
           <div class="flex items-center gap-3">
@@ -133,41 +84,34 @@
         </div>
         <!-- Category Overview -->
         <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-6">
-          <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Transcriptions Overview
-          </h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all Transcriptions Folders</p>
+            <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Category Overview
+            </h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all categories</p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            <div>
-              <p class="text-2xl font-bold text-blue-500">0</p>
-              <p class="text-sm">Academic Council Meeting</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+                <div><p class="text-2xl font-bold text-blue-500">0</p><p class="text-sm">Transcription</p></div>
+                <div><p class="text-2xl font-bold text-green-500">0</p><p class="text-sm">Meeting Minutes</p></div>
+                <div><p class="text-2xl font-bold text-pink-500">0</p><p class="text-sm">Excerpts</p></div>
+                <div><p class="text-2xl font-bold text-purple-500">0</p><p class="text-sm">Secretary's Certification</p></div>
+                <div><p class="text-2xl font-bold text-yellow-500">0</p><p class="text-sm">Referendum</p></div>
+                <div><p class="text-2xl font-bold text-indigo-500">0</p><p class="text-sm">Board Resolution</p></div>
             </div>
-            <div>
-              <p class="text-2xl font-bold text-green-500">0</p>
-              <p class="text-sm">Administrative Council Meeting</p>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-pink-500">0</p>
-              <p class="text-sm">Board Meeting</p>
-            </div>
-          </div>
         </div>
 
         <!-- Category Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          <!-- Academic Council Meeting -->
+          <!-- Transcription -->
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Academic Council Meeting</h3>
+              <h3 class="font-semibold">Transcription</h3>
               <span class="text-xs text-gray-500">0 documents</span>
             </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Academic Council Meeting transcriptions and recorded discussions</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Meeting transcriptions and recorded discussions</p>
               <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
               <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
             <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'academic-council') }}" 
+              <a href="{{ route('transcriptions.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
@@ -175,17 +119,17 @@
             </div>
           </div>
 
-          <!-- Administrative Council Meeting -->
+          <!-- Meeting Minutes -->
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Administrative Council Meeting</h3>
+              <h3 class="font-semibold">Meeting Minutes</h3>
               <span class="text-xs text-gray-500">0 documents</span>
             </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Administrative Council Meeting transcriptions and recorded discussions</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Meeting minutes and summaries</p>
               <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
               <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
             <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'administrative-council') }}" 
+              <a href="{{ route('minutes.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
@@ -193,17 +137,17 @@
             </div>
           </div>
 
-          <!-- Board Meeting -->
+          <!-- Excerpts -->
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Board Meeting</h3>
+              <h3 class="font-semibold">Excerpts</h3>
               <span class="text-xs text-gray-500">0 documents</span>
             </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board Meeting transcriptions and recorded discussions</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Official excerpts from meetings</p>
               <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
               <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
             <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'board-meetings') }}" 
+              <a href="{{ route('excerpts.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
@@ -211,7 +155,61 @@
             </div>
           </div>
 
+          <!-- Secretary's Certification -->
+          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-semibold">Secretary's Certification</h3>
+              <span class="text-xs text-gray-500">0 documents</span>
+            </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Official certifications and attestations</p>
+              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
+              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+            <div class="flex gap-2">
+              <a href="{{ route('secretary-certification.index') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+                Browse
+              </a>
+              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+            </div>
+          </div>
+
+          <!-- Referendum -->
+          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-semibold">Referendum</h3>
+              <span class="text-xs text-gray-500">0 documents</span>
+            </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Referendum results and voting records</p>
+              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
+              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+            <div class="flex gap-2">
+              <a href="{{ route('referendum.index') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+                Browse
+              </a>
+              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+            </div>
+          </div>
+
+          <!-- Board Resolution -->
+          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-semibold">Board Resolution</h3>
+              <span class="text-xs text-gray-500">0 documents</span>
+            </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board resolutions and official decisions</p>
+              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
+              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+            <div class="flex gap-2">
+              <a href="{{ route('board-resolution.index') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+                Browse
+              </a>
+              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+            </div>
+          </div>
         </div>
+
       </main>
     </div>
 

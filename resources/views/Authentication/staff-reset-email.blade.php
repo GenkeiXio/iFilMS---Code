@@ -36,8 +36,8 @@
         }
 
         .btn-reset {
-            background-color: #0d6efd;
-            color: #fff;
+            background-color: lightskyblue;
+            color: black;
             padding: 10px 24px;
             border-radius: 5px;
             text-decoration: none;
@@ -46,8 +46,8 @@
         }
 
         .btn-reset:hover {
-            background-color: #084298;
-            color: #fff;
+            background-color: ORANGE;
+            color: Black;
         }
     </style>
 </head>

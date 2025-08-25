@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffPasswordResetController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TranscriptionController;
 use App\Http\Controllers\MinutesController;
 use App\Http\Controllers\ExcerptsController;
 use App\Http\Controllers\SecretaryCertificationController;
 use App\Http\Controllers\ReferendumController;
+use App\Http\Controllers\BoardResolutionController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -18,9 +20,9 @@ Route::post('/login', [StaffAuthController::class, 'login']);
 Route::post('/logout', [StaffAuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('dashboard', function () {
+    Route::get('/dashboard', function () {
         return view('dashboard');
-    });
+    })->name('dashboard');
 });
 
 Route::middleware('guest')->group(function () {
@@ -28,6 +30,24 @@ Route::middleware('guest')->group(function () {
     Route::post('staff/forgot-password', [StaffPasswordResetController::class, 'sendResetLink'])->name('staff.password.email');
     Route::get('staff/reset-password/{token}', [StaffPasswordResetController::class, 'showResetPasswordForm'])->name('staff.password.reset');
     Route::post('staff/reset-password', [StaffPasswordResetController::class, 'resetPassword'])->name('staff.password.update');
+});
+
+Route::middleware('auth:staff')->group(function () {
+    Route::get('/mainsidebar/documents', function () {
+        return view('MainSideBar.documents'); 
+    })->name('mainsidebar.documents');
+});
+
+Route::middleware('auth:staff')->group(function () {
+    Route::get('/mainsidebar/upload', function () {
+        return view('MainSideBar.upload'); 
+    })->name('mainsidebar.upload');
+});
+
+Route::middleware('auth:staff')->group(function () {
+    Route::get('/mainsidebar/categories', function () {
+        return view('MainSideBar.categories');
+    })->name('mainsidebar.categories');
 });
 
 Route::middleware('auth:staff')->group(function () {
@@ -90,4 +110,12 @@ Route::middleware('auth:staff')->group(function () {
 
     Route::post('/referendum/upload', [ReferendumController::class, 'upload'])
         ->name('referendum.upload');
+});
+
+Route::middleware('auth:staff')->group(function () {
+    Route::get('/board-resolution', [BoardResolutionController::class, 'index'])
+        ->name('board-resolution.index');
+
+    Route::post('/board-resolution/upload', [BoardResolutionController::class, 'upload'])
+        ->name('board-resolution.upload');
 });

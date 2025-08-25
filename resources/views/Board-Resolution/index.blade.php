@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>iFiLMS Transcriptions</title>
+  <title>iFiLMS Board Resolution</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -118,100 +118,82 @@
 
       <!-- Main Content -->
       <main class="flex-1 p-6">
-      <!-- Topbar -->
+        <!-- Topbar -->
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-3 text-lg font-semibold">
-            <i data-lucide="folder-open"></i> Transcriptions
+            <i data-lucide="file-text" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+            <h4 class="mb-0">{{ $title }}</h4>
           </div>
 
-          <div class="flex items-center gap-3">
-            <!-- Toggle Dark Mode -->
+          <div class="flex items-center gap-2">
+            <!-- Dark Mode Toggle -->
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
               <i data-lucide="moon" id="themeIcon"></i>
             </button>
           </div>
         </div>
-        <!-- Category Overview -->
-        <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-6">
-          <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Transcriptions Overview
-          </h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all Transcriptions Folders</p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            <div>
-              <p class="text-2xl font-bold text-blue-500">0</p>
-              <p class="text-sm">Academic Council Meeting</p>
+        <!-- Filters and Search -->
+        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 mb-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            
+            <!-- Search Input with Icon -->
+            <div class="relative w-full sm:w-1/2">
+              <input 
+                type="text" 
+                placeholder="Search documents by title or tags..." 
+                class="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white text-sm">
+              <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
             </div>
-            <div>
-              <p class="text-2xl font-bold text-green-500">0</p>
-              <p class="text-sm">Administrative Council Meeting</p>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-pink-500">0</p>
-              <p class="text-sm">Board Meeting</p>
+
+            <!-- Filters -->
+            <div class="flex gap-2">
+              <select class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option>Sort by Date</option>
+                <option>Sort by Name</option>
+              </select>
             </div>
           </div>
         </div>
 
-        <!-- Category Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Results Table -->
+            <div class="border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-900 shadow-sm">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs font-semibold">
+                        <tr>
+                            <th class="px-6 py-3 text-left">Document Title</th>
+                            <th class="px-6 py-3 text-left">File Type</th>
+                            <th class="px-6 py-3 text-left">Date Uploaded</th>
+                            <th class="px-6 py-3 text-left">Uploaded By</th>
+                            <th class="px-6 py-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- Placeholder row when no documents -->
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400 italic">
+                            No documents yet
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-          <!-- Academic Council Meeting -->
-          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Academic Council Meeting</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
+                <div>Rows Per Page 
+                    <select class="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="px-2 py-1 border rounded-lg">&laquo;</button>
+                        <span>Page 1 of 1</span>
+                    <button class="px-2 py-1 border rounded-lg">&raquo;</button>
+                </div>
             </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Academic Council Meeting transcriptions and recorded discussions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
-            <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'academic-council') }}" 
-                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
-                Browse
-              </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
-            </div>
-          </div>
-
-          <!-- Administrative Council Meeting -->
-          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Administrative Council Meeting</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
-            </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Administrative Council Meeting transcriptions and recorded discussions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
-            <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'administrative-council') }}" 
-                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
-                Browse
-              </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
-            </div>
-          </div>
-
-          <!-- Board Meeting -->
-          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold">Board Meeting</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
-            </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board Meeting transcriptions and recorded discussions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
-            <div class="flex gap-2">
-              <a href="{{ route('transcriptions.list', 'board-meetings') }}" 
-                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
-                Browse
-              </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
-            </div>
-          </div>
-
-        </div>
       </main>
     </div>
 

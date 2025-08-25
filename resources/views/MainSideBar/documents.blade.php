@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>iFiLMS Secretary's Certification</title>
+  <title>iFiLMS Documents</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,55 +60,6 @@
 
           <hr class="my-3">
 
-          <div>
-            <button onclick="toggleMenu('transcriptionsMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="captions"></i> Transcriptions</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="transcriptionsChevron"></i>
-            </button>
-            <ul id="transcriptionsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('transcriptions.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <button onclick="toggleMenu('minutesMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="clock"></i> Meeting Minutes</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="minutesChevron"></i>
-            </button>
-            <ul id="minutesMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('minutes.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('minutes.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('minutes.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <button onclick="toggleMenu('excerptsMenu')" 
-                class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="book-open-text"></i> Excerpts</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="excerptsChevron"></i>
-            </button>
-            <ul id="excerptsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('excerpts.board') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
-
-          <a href="{{ route('secretary-certification.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="badge-check"></i> Secretary's Certification
-          </a>
-
-          <a href="{{ route('referendum.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="file-text"></i> Referendum
-          </a>
-
-          <a href="{{ route('board-resolution.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-            <i data-lucide="file-text"></i> Board Resolution
-          </a>
-
-          <hr class="my-3">
-
           <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-3 text-gray-700 dark:text-gray-100">
             <i data-lucide="log-out"></i> LogOut
           </a>
@@ -121,12 +72,9 @@
         <!-- Topbar -->
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-3 text-lg font-semibold">
-            <i data-lucide="file-text" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
-            <h4 class="mb-0">{{ $title }}</h4>
+            <i data-lucide="file-text"></i> All Documents
           </div>
-
-          <div class="flex items-center gap-2">
-            <!-- Dark Mode Toggle -->
+          <div class="flex items-center gap-3">
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
               <i data-lucide="moon" id="themeIcon"></i>
             </button>
@@ -148,6 +96,16 @@
 
             <!-- Filters -->
             <div class="flex gap-2">
+              <select class="px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option>All Categories</option>
+                <option>Transcriptions</option>
+                <option>Minutes</option>
+                <option>Excerpts</option>
+                <option>Secretary's Certification</option>
+                <option>Referendum</option>
+                <option>Board Resolution</option>
+              </select>
+
               <select class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
                 <option>Sort by Date</option>
                 <option>Sort by Name</option>

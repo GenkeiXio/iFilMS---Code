@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>iFiLMS Dashboard</title>
+  <title>iFiLMS Upload</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -49,7 +49,7 @@
           <a href="{{ route('mainsidebar.upload') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
               <i data-lucide="upload"></i> Upload
           </a>
-          
+
           <a href="{{ route('mainsidebar.documents') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
               <i data-lucide="file-text"></i> Documents
           </a>
@@ -69,125 +69,92 @@
 
       <!-- Main Content -->
       <main class="flex-1 p-6">
-      <!-- Topbar -->
+        <!-- Topbar -->
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-3 text-lg font-semibold">
-            <i data-lucide="layout-dashboard"></i> Dashboard
+            <i data-lucide="upload"></i> Upload Documents
           </div>
-
           <div class="flex items-center gap-3">
-            
-
-            <!-- Toggle Dark Mode -->
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
               <i data-lucide="moon" id="themeIcon"></i>
             </button>
           </div>
         </div>
 
-        <!-- Welcome -->
-        <p class="text-gray-500 dark:text-gray-400 mb-6">
-          Welcome to the iFiLMS File Management System
-        </p>
-
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
-            <div class="flex justify-between items-center">
-              <p class="text-gray-500 text-sm">Total Documents</p>
-              <i data-lucide="file-text" class="text-gray-400 w-5 h-5"></i>
-            </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
-          </div>
-
-          <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
-            <div class="flex justify-between items-center">
-              <p class="text-gray-500 text-sm">This Month</p>
-              <i data-lucide="calendar" class="text-gray-400 w-5 h-5"></i>
-            </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
-          </div>
-
-          <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
-            <div class="flex justify-between items-center">
-              <p class="text-gray-500 text-sm">Categories</p>
-              <i data-lucide="folder" class="text-gray-400 w-5 h-5"></i>
-            </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-500 text-xs font-medium">0% from last month</p>
-          </div>
-
-          <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
-            <div class="flex justify-between items-center">
-              <p class="text-gray-500 text-sm">Active Users</p>
-              <i data-lucide="users" class="text-gray-400 w-5 h-5"></i>
-            </div>
-            <h2 class="text-2xl font-bold">2</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
-          </div>
-        </div>
-
-        <!-- Two-column layout -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-        <!-- Quick Actions -->
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <h3 class="font-semibold mb-4">Quick Actions</h3>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Common tasks and shortcuts</p>
-            <ul class="space-y-3">
-              
-              <!-- Upload Document -->
-              <li>
-                <a href="{{ route('mainsidebar.upload') }}"
-                  class="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
-                  <i data-lucide="upload" class="w-5 h-5"></i>
-                  <div>
-                    <p class="font-medium">Upload Document</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Add new documents</p>
-                  </div>
-                </a>
-              </li>
-
-              <!-- Search Documents -->
-              <li>
-                <a href="{{ route('mainsidebar.documents') }}"
-                  class="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
-                  <i data-lucide="search" class="w-5 h-5"></i>
-                  <div>
-                    <p class="font-medium">Search Documents</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Find documents quickly</p>
-                  </div>
-                </a>
-              </li>
-
-              <!-- View Categories -->
-              <li>
-                <a href="{{ route('mainsidebar.categories') }}"
-                  class="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
-                  <i data-lucide="folder-open" class="w-5 h-5"></i>
-                  <div>
-                    <p class="font-medium">View Categories</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Browse by document type</p>
-                  </div>
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-          <!-- Recent Activity -->
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <h3 class="font-semibold mb-4">Recent Activity</h3>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Latest document actions</p>
-
-            <!-- Placeholder when no activity -->
-            <div class="flex items-center justify-center h-32 text-gray-400 dark:text-gray-500 text-sm italic">
-              No activities yet
+        <!-- Upload Section -->
+        <section class="space-y-6">
+          <!-- File Upload -->
+          <div class="border rounded-xl p-6 shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+            <h2 class="text-lg font-semibold mb-2">File Upload</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Drag and drop files or click to browse. Supports PDF, DOCX, CSV, Excel, and TXT files.
+            </p>
+            <div
+              class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-10 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+            >
+              <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-gray-400"></i>
+              <p class="mt-2 text-gray-600 dark:text-gray-300 font-medium">Drop files here</p>
+              <p class="text-sm text-gray-400">or click to browse from your computer</p>
+              <button class="mt-4 px-4 py-2 border rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-600/50 transition">
+                Choose Files
+              </button>
             </div>
           </div>
-        </div>
+
+          <!-- Document Information -->
+          <div class="border rounded-xl p-6 shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+            <h2 class="text-lg font-semibold mb-2">Document Information</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              Provide metadata to help organize and find this document later
+            </p>
+
+            <form class="space-y-5">
+              <!-- Title + Category -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium mb-1">Document Title *</label>
+                  <input type="text" placeholder="Enter document title"
+                    class="w-full px-4 py-2 border rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-400 text-sm">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Category *</label>
+                  <select class="w-full px-4 py-2 border rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-400 text-sm">
+                    <option>All Categories</option>
+                    <option>Transcriptions</option>
+                    <option>Minutes</option>
+                    <option>Excerpts</option>
+                    <option>Secretary's Certification</option>
+                    <option>Referendum</option>
+                    <option>Board Resolution</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-1">Meeting Type *</label>
+                  <select class="w-full px-4 py-2 border rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-400 text-sm">
+                    <option>Meeting Type</option>
+                    <option>Academic Council Meeting</option>
+                    <option>Administrative Council Meeting</option>
+                    <option>Board Meeting</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Tags -->
+              <div>
+                <label class="block text-sm font-medium mb-1">Tags</label>
+                <input type="text" placeholder="Enter tags separated by commas (e.g., board meeting, 2024, policy)"
+                  class="w-full px-4 py-2 border rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-400 text-sm">
+              </div>
+
+              <!-- Actions -->
+              <div class="flex justify-end gap-3">
+                <button type="submit" class="px-4 py-2 border rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+                  Upload Documents
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
       </main>
     </div>
 

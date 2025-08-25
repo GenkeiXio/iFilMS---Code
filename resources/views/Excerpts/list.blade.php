@@ -1,161 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-colors duration-300">
 <head>
-  <meta charset="UTF-8">
-  <title>{{ $title }} • Excerpts</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iFiLMS Excertps</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    body { background: #f7f7f7; }
-    .dropzone {
-      border: 2px dashed #c9c9c9;
-      border-radius: 10px;
-      padding: 40px;
-      text-align: center;
-      transition: background .2s, border-color .2s;
+    body {
+      font-family: 'Inter', sans-serif;
     }
-    .dropzone.dragover {
-      background: #eef6ff;
-      border-color: #66a3ff;
-    }
-    .file-list small { display:block; }
   </style>
 </head>
-<body>
-<nav class="navbar navbar-light bg-white border-bottom">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="{{ url('/dashboard') }}">iFiLMS Dashboard</a>
-    <div>
-      <a href="{{ route('excerpts.index') }}" class="btn btn-outline-secondary btn-sm">All Excerpts</a>
-    </div>
-  </div>
-</nav>
+  <body class="bg-white dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-200 transition-colors duration-300">
 
-<div class="container py-4">
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <div>
-      <h4 class="mb-0">{{ $title }}</h4>
-      <small class="text-muted">Upload and manage files for this category.</small>
-    </div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload File</button>
-  </div>
+    <div class="flex min-h-screen">
 
-  @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-  @endif
+      <!-- Sidebar -->
+      <aside class="w-64 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-[#181818] p-4 space-y-4">
+        <!-- Logo -->
+        <div class="mb-6 flex items-center space-x-2">
+          <h1 class="text-[22px] font-extrabold uppercase tracking-wide">
+            <span class="text-blue-500">BICOL</span> <span class="text-orange-500">UNIVERSITY</span>
+          </h1>
+        </div>
 
-  <div class="card">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover table-nowrap mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>Document Title</th>
-              <th>File Type</th>
-              <th>Date Uploaded</th>
-              <th>Uploaded By</th>
-              <th style="width:120px;">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($documents as $doc)
-              <tr>
-                <td>{{ $doc->title }}</td>
-                <td class="fw-semibold text-uppercase">{{ $doc->file_type }}</td>
-                <td>{{ $doc->created_at?->format('M d, Y') }}</td>
-                <td>{{ $doc->staff?->name ?? 'Staff' }}</td>
-                <td>
-                  <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-sm btn-outline-primary">View</a>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Download</a>
-                  </div>
-                </td>
-              </tr>
-            @empty
-              <tr>
-                <td colspan="5" class="text-center py-4 text-muted">No records yet</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+        <!-- Sidebar menu -->
+        <nav class="space-y-2 text-sm">
+          <div class="text-gray-400 font-semibold dark:text-gray-500">Dashboard</div>
 
-{{-- Upload Modal --}}
-<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0">
-      <div class="modal-header">
-        <h5 class="modal-title">Upload to: {{ $title }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+          <!-- Collapsible Sections (Transcriptions, Minutes) -->
+          <a href="{{ url('/dashboard') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+              <i data-lucide="house"></i> Dashboard
+          </a>
 
-      <form method="POST" action="{{ route('excerpts.upload') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="modal-body">
-          <div class="dropzone" id="dropzone">
-            <p class="mb-2 fw-semibold">Drag & drop file here</p>
-            <p class="text-muted small">or click to choose a file</p>
-            <input type="file" id="fileInput" name="file" class="d-none"
-                   accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx">
-            <div class="file-list mt-3 text-muted small" id="fileList"></div>
+          <a href="{{ route('mainsidebar.upload') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+              <i data-lucide="upload"></i> Upload
+          </a>
+
+          <a href="{{ route('mainsidebar.documents') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+              <i data-lucide="file-text"></i> Documents
+          </a>
+
+          <a href="{{ route('mainsidebar.categories') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+            <i data-lucide="folder-open"></i> Categories
+          </a>
+
+          <hr class="my-3">
+
+          <div>
+            <button onclick="toggleMenu('transcriptionsMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
+                <span class="flex items-center gap-2"><i data-lucide="captions"></i> Transcriptions</span>
+                <i data-lucide="chevron-down" class="transition-all duration-300" id="transcriptionsChevron"></i>
+            </button>
+            <ul id="transcriptionsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
+                <li><a href="{{ route('transcriptions.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
+                <li><a href="{{ route('transcriptions.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
+                <li><a href="{{ route('transcriptions.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <button onclick="toggleMenu('minutesMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
+                <span class="flex items-center gap-2"><i data-lucide="clock"></i> Meeting Minutes</span>
+                <i data-lucide="chevron-down" class="transition-all duration-300" id="minutesChevron"></i>
+            </button>
+            <ul id="minutesMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
+                <li><a href="{{ route('minutes.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
+                <li><a href="{{ route('minutes.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
+                <li><a href="{{ route('minutes.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <button onclick="toggleMenu('excerptsMenu')" 
+                class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
+                <span class="flex items-center gap-2"><i data-lucide="book-open-text"></i> Excerpts</span>
+                <i data-lucide="chevron-down" class="transition-all duration-300" id="excerptsChevron"></i>
+            </button>
+            <ul id="excerptsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
+                <li><a href="{{ route('excerpts.board') }}" class="hover:underline">Board Meetings</a></li>
+            </ul>
+          </div>
+
+          <a href="{{ route('secretary-certification.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="badge-check"></i> Secretary's Certification
+          </a>
+
+          <a href="{{ route('referendum.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="file-text"></i> Referendum
+          </a>
+
+          <a href="{{ route('board-resolution.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="file-text"></i> Board Resolution
+          </a>
+
+          <hr class="my-3">
+
+          <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-3 text-gray-700 dark:text-gray-100">
+            <i data-lucide="log-out"></i> LogOut
+          </a>
+          <form id="logout-form" method="POST" action="{{ route('logout') }}" class="hidden">@csrf</form>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <!-- Topbar -->
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-3 text-lg font-semibold">
+            <i data-lucide="file-text" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+            <h4 class="mb-0">{{ $title }}</h4>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- All Minutes Button -->
+            <a href="{{ route('excerpts.index') }}" class="px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+              Excerpts Board Meeting Folder
+            </a>
+
+            <!-- Dark Mode Toggle -->
+            <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
+              <i data-lucide="moon" id="themeIcon"></i>
+            </button>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
-          <button class="btn btn-primary" type="submit">Upload</button>
+        <!-- Filters and Search -->
+        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 mb-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            
+            <!-- Search Input with Icon -->
+            <div class="relative w-full sm:w-1/2">
+              <input 
+                type="text" 
+                placeholder="Search documents by title or tags..." 
+                class="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white text-sm">
+              <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex gap-2">
+              <select class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option>Sort by Date</option>
+                <option>Sort by Name</option>
+              </select>
+            </div>
+          </div>
         </div>
-      </form>
+
+        <!-- Results Table -->
+            <div class="border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-900 shadow-sm">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs font-semibold">
+                        <tr>
+                            <th class="px-6 py-3 text-left">Document Title</th>
+                            <th class="px-6 py-3 text-left">File Type</th>
+                            <th class="px-6 py-3 text-left">Date Uploaded</th>
+                            <th class="px-6 py-3 text-left">Uploaded By</th>
+                            <th class="px-6 py-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- Placeholder row when no documents -->
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400 italic">
+                            No documents yet
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
+                <div>Rows Per Page 
+                    <select class="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="px-2 py-1 border rounded-lg">&laquo;</button>
+                        <span>Page 1 of 1</span>
+                    <button class="px-2 py-1 border rounded-lg">&raquo;</button>
+                </div>
+            </div>
+      </main>
     </div>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  (function() {
-    const dropzone   = document.getElementById('dropzone');
-    const fileInput  = document.getElementById('fileInput');
-    const fileList   = document.getElementById('fileList');
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-gray-400 dark:text-gray-500">
+      © 2025 Bicol University Board of Regents • All rights reserved.
+    </footer>
 
-    dropzone.addEventListener('click', () => fileInput.click());
+  <!-- Scripts -->
+  <script>
+    // Lucide Icons
+    lucide.createIcons();
 
-    fileInput.addEventListener('change', () => {
-      fileList.innerHTML = '';
-      if (fileInput.files.length) {
-        [...fileInput.files].forEach(f => {
-          const el = document.createElement('small');
-          el.textContent = `• ${f.name}`;
-          fileList.appendChild(el);
-        });
-      }
+    // Collapsible Menus
+    function toggleMenu(id) {
+      const menu = document.getElementById(id);
+      const chevron = document.querySelector(`#${id.replace("Menu", "Chevron")}`);
+      menu.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-180');
+    }
+
+    // Theme Toggle
+    const toggle = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    // Load saved mode
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+      icon.setAttribute("data-lucide", "sun");
+    } else {
+      icon.setAttribute("data-lucide", "moon");
+    }
+    lucide.createIcons();
+
+    // Toggle theme
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+      lucide.createIcons();
+      localStorage.theme = isDark ? 'dark' : 'light';
     });
-
-    dropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => {
-      dropzone.classList.remove('dragover');
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-
-      if (e.dataTransfer.files.length) {
-        fileInput.files = e.dataTransfer.files;
-        fileList.innerHTML = '';
-        [...e.dataTransfer.files].forEach(f => {
-          const el = document.createElement('small');
-          el.textContent = `• ${f.name}`;
-          fileList.appendChild(el);
-        });
-      }
-    });
-  })();
-</script>
-</body>
+  </script>
+  </body>
 </html>
