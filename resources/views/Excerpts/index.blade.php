@@ -60,40 +60,17 @@
 
           <hr class="my-3">
 
-          <div>
-            <button onclick="toggleMenu('transcriptionsMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="captions"></i> Transcriptions</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="transcriptionsChevron"></i>
-            </button>
-            <ul id="transcriptionsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('transcriptions.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('transcriptions.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
+          <a href="{{ route('transcriptions.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="captions"></i> Transcriptions
+          </a>
 
-          <div>
-            <button onclick="toggleMenu('minutesMenu')" class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="clock"></i> Meeting Minutes</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="minutesChevron"></i>
-            </button>
-            <ul id="minutesMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('minutes.list', 'academic-council') }}" class="hover:underline">Academic Council</a></li>
-                <li><a href="{{ route('minutes.list', 'administrative-council') }}" class="hover:underline">Administrative Council</a></li>
-                <li><a href="{{ route('minutes.list', 'board-meetings') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
+          <a href="{{ route('minutes.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="clock"></i> Minutes
+          </a>
 
-          <div>
-            <button onclick="toggleMenu('excerptsMenu')" 
-                class="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 font-medium">
-                <span class="flex items-center gap-2"><i data-lucide="book-open-text"></i> Excerpts</span>
-                <i data-lucide="chevron-down" class="transition-all duration-300" id="excerptsChevron"></i>
-            </button>
-            <ul id="excerptsMenu" class="ml-6 mt-2 space-y-1 hidden text-gray-600 dark:text-gray-400">
-                <li><a href="{{ route('excerpts.board') }}" class="hover:underline">Board Meetings</a></li>
-            </ul>
-          </div>
+          <a href="{{ route('excerpts.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
+            <i data-lucide="book-open-text"></i> Excerpts
+          </a>
 
           <a href="{{ route('secretary-certification.index') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
             <i data-lucide="badge-check"></i> Secretary's Certification
@@ -118,55 +95,57 @@
 
       <!-- Main Content -->
       <main class="flex-1 p-6">
-      <!-- Topbar -->
+        <!-- Topbar -->
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-3 text-lg font-semibold">
-            <i data-lucide="book-open-text"></i> Exerpts
+            <i data-lucide="book-open-text"></i> Excerpts
           </div>
-
-          <div class="flex items-center gap-3">
-            <!-- Toggle Dark Mode -->
+          <div>
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
-              <i data-lucide="moon" id="themeIcon"></i>
+              <span id="themeIcon" data-lucide="moon"></span>
             </button>
           </div>
         </div>
-        <!-- Category Overview -->
-        <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-6">
-          <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Transcriptions Overview
-          </h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all Transcriptions Folders</p>
 
+        <!-- Category Overview -->
+        <div class="p-6 border rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-6">
+          <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
+            <i data-lucide="bar-chart-3"></i> Excerpts Overview
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across Excerpts folder</p>
           <div class="flex justify-center text-center">
             <div>
-              <p class="text-2xl font-bold text-pink-500">0</p>
+              <p class="text-2xl font-bold text-pink-500">{{ $boardCount }}</p>
               <p class="text-sm">Board Meeting</p>
             </div>
           </div>
         </div>
 
-        <!-- Category Cards -->
+        <!-- Category Card -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          <!-- Board Meeting -->
-          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
+          <div class="p-4 border rounded-xl bg-white dark:bg-gray-900 shadow-sm">
+            <div class="flex justify-between mb-2">
               <h3 class="font-semibold">Board Meeting</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">{{ $boardCount }} documents</span>
             </div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board Meeting transcriptions and recorded discussions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board Meeting excerpts</p>
+            <p class="text-xs mb-1">Last upload:
+              <span class="font-medium">{{ $lastUpload }}</span>
+            </p>
+            <p class="text-xs mb-3">Status:
+              <span class="{{ $status === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                {{ $status }}
+              </span>
+            </p>
             <div class="flex gap-2">
-              <a href="{{ route('excerpts.board') }}" class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
+              <a href="{{ route('excerpts.list') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center border hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
               <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
             </div>
           </div>
         </div>
-        
       </main>
     </div>
 
@@ -206,8 +185,13 @@
     toggle.addEventListener('click', () => {
       html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+
+      // Replace span content each time
+      const iconContainer = document.getElementById('themeIcon');
+      iconContainer.innerHTML = "";
+      iconContainer.setAttribute("data-lucide", isDark ? "sun" : "moon");
       lucide.createIcons();
+
       localStorage.theme = isDark ? 'dark' : 'light';
     });
   </script>

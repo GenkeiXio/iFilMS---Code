@@ -78,44 +78,78 @@
           <div class="flex items-center gap-3">
             <!-- Toggle Dark Mode -->
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
-              <i data-lucide="moon" id="themeIcon"></i>
+              <span id="themeIcon" data-lucide="moon"></span>
             </button>
+
           </div>
         </div>
+        
         <!-- Category Overview -->
         <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm mb-6">
             <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
                 <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Category Overview
             </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all categories</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Document distribution across all categories</p>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
-                <div><p class="text-2xl font-bold text-blue-500">0</p><p class="text-sm">Transcription</p></div>
-                <div><p class="text-2xl font-bold text-green-500">0</p><p class="text-sm">Meeting Minutes</p></div>
-                <div><p class="text-2xl font-bold text-pink-500">0</p><p class="text-sm">Excerpts</p></div>
-                <div><p class="text-2xl font-bold text-purple-500">0</p><p class="text-sm">Secretary's Certification</p></div>
-                <div><p class="text-2xl font-bold text-yellow-500">0</p><p class="text-sm">Referendum</p></div>
-                <div><p class="text-2xl font-bold text-indigo-500">0</p><p class="text-sm">Board Resolution</p></div>
+                <div>
+                    <p class="text-2xl font-bold text-blue-500">{{ $counts['transcriptions'] }}</p>
+                    <p class="text-sm">Transcriptions</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-green-500">{{ $counts['minutes'] }}</p>
+                    <p class="text-sm">Meeting Minutes</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-pink-500">{{ $counts['excerpts'] }}</p>
+                    <p class="text-sm">Excerpts</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-purple-500">{{ $counts['secretary_certification'] }}</p>
+                    <p class="text-sm">Secretary's Certification</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-yellow-500">{{ $counts['referendum'] }}</p>
+                    <p class="text-sm">Referendum</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-indigo-500">{{ $counts['board_resolution'] }}</p>
+                    <p class="text-sm">Board Resolution</p>
+                </div>
             </div>
         </div>
 
         <!-- Category Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
           <!-- Transcription -->
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Transcription</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['transcriptions'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Meeting transcriptions and recorded discussions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['transcriptions'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['transcriptions'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['transcriptions'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('transcriptions.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
 
@@ -123,17 +157,30 @@
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Meeting Minutes</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['minutes'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Meeting minutes and summaries</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['minutes'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['minutes'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['minutes'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('minutes.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
 
@@ -141,17 +188,30 @@
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Excerpts</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['excerpts'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Official excerpts from meetings</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['excerpts'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['excerpts'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['excerpts'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('excerpts.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
 
@@ -159,17 +219,30 @@
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Secretary's Certification</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['secretary_certification'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Official certifications and attestations</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['secretary_certification'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['secretary_certification'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['secretary_certification'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('secretary-certification.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
 
@@ -177,17 +250,30 @@
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Referendum</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['referendum'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Referendum results and voting records</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['referendum'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['referendum'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['referendum'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('referendum.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
 
@@ -195,21 +281,33 @@
           <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold">Board Resolution</h3>
-              <span class="text-xs text-gray-500">0 documents</span>
+              <span class="text-xs text-gray-500">
+                {{ $counts['board_resolution'] }} documents
+              </span>
             </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Board resolutions and official decisions</p>
-              <p class="text-xs mb-1">Last upload: <span class="font-medium">—</span></p>
-              <p class="text-xs mb-3">Status: <span class="text-green-500 font-medium">Active</span></p>
+              <p class="text-xs mb-1">Last upload: 
+                <span class="font-medium">
+                  {{ $lastUploads['board_resolution'] ?? '—' }}
+                </span>
+              </p>
+              <p class="text-xs mb-3">Status: 
+                <span class="{{ $statuses['board_resolution'] === 'Active' ? 'text-green-500' : 'text-red-500' }} font-medium">
+                  {{ $statuses['board_resolution'] }}
+                </span>
+              </p>
             <div class="flex gap-2">
               <a href="{{ route('board-resolution.index') }}" 
                 class="flex-1 px-3 py-2 text-sm rounded-lg text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Browse
               </a>
-              <button class="flex-1 px-3 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600">Upload</button>
+              <a href="{{ route('mainsidebar.upload') }}" 
+                class="flex-1 px-3 py-2 text-sm rounded-lg text-center bg-blue-500 text-white hover:bg-blue-600">
+                Upload
+              </a>
             </div>
           </div>
         </div>
-
       </main>
     </div>
 
@@ -249,8 +347,13 @@
     toggle.addEventListener('click', () => {
       html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+
+      // Replace span content each time
+      const iconContainer = document.getElementById('themeIcon');
+      iconContainer.innerHTML = "";
+      iconContainer.setAttribute("data-lucide", isDark ? "sun" : "moon");
       lucide.createIcons();
+
       localStorage.theme = isDark ? 'dark' : 'light';
     });
   </script>

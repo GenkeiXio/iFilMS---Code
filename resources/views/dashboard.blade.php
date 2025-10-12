@@ -80,7 +80,7 @@
 
             <!-- Toggle Dark Mode -->
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
-              <i data-lucide="moon" id="themeIcon"></i>
+              <span id="themeIcon" data-lucide="moon"></span>
             </button>
           </div>
         </div>
@@ -97,8 +97,8 @@
               <p class="text-gray-500 text-sm">Total Documents</p>
               <i data-lucide="file-text" class="text-gray-400 w-5 h-5"></i>
             </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
+            <h2 class="text-2xl font-bold">{{ $totalDocuments }}</h2>
+            <p class="text-green-600 text-xs font-medium">{{ $thisMonth }} added this month</p>
           </div>
 
           <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
@@ -106,8 +106,8 @@
               <p class="text-gray-500 text-sm">This Month</p>
               <i data-lucide="calendar" class="text-gray-400 w-5 h-5"></i>
             </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
+            <h2 class="text-2xl font-bold">{{ $thisMonth }}</h2>
+            <p class="text-green-600 text-xs font-medium">Uploaded this month</p>
           </div>
 
           <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
@@ -115,8 +115,8 @@
               <p class="text-gray-500 text-sm">Categories</p>
               <i data-lucide="folder" class="text-gray-400 w-5 h-5"></i>
             </div>
-            <h2 class="text-2xl font-bold">0</h2>
-            <p class="text-green-500 text-xs font-medium">0% from last month</p>
+            <h2 class="text-2xl font-bold">{{ $categories }}</h2>
+            <p class="text-green-500 text-xs font-medium">Total categories</p>
           </div>
 
           <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow">
@@ -124,8 +124,8 @@
               <p class="text-gray-500 text-sm">Active Users</p>
               <i data-lucide="users" class="text-gray-400 w-5 h-5"></i>
             </div>
-            <h2 class="text-2xl font-bold">2</h2>
-            <p class="text-green-600 text-xs font-medium">0% from last month</p>
+            <h2 class="text-2xl font-bold">{{ $activeUsers }}</h2>
+            <p class="text-green-600 text-xs font-medium">Active in last 30 days</p>
           </div>
         </div>
 
@@ -182,10 +182,39 @@
             <h3 class="font-semibold mb-4">Recent Activity</h3>
             <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Latest document actions</p>
 
-            <!-- Placeholder when no activity -->
-            <div class="flex items-center justify-center h-32 text-gray-400 dark:text-gray-500 text-sm italic">
-              No activities yet
-            </div>
+            @if($recentActivity->isEmpty())
+                <div class="flex items-center justify-center h-32 text-gray-400 dark:text-gray-500 text-sm italic">
+                    No activities yet
+                </div>
+            @else
+                <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach($recentActivity as $activity)
+                        @php
+                            $uploadDate = \Carbon\Carbon::parse($activity->upload_date)->timezone(config('app.timezone'));
+                            $isNew = $uploadDate->greaterThanOrEqualTo(now()->subDay()); // uploaded within last 24h
+                        @endphp
+
+                        <li class="py-2 text-sm flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span>{{ $activity->title ?? 'Untitled Document' }}</span>
+                                @if($isNew)
+                                    <span class="ml-2 px-2 py-0.5 text-xs font-semibold text-white bg-green-500 rounded-full">
+                                        NEW
+                                    </span>
+                                @endif
+                            </div>
+
+                            <span 
+                                class="time-ago text-gray-500 dark:text-gray-400"
+                                data-time="{{ $uploadDate->toIso8601String() }}"
+                                title="{{ $uploadDate->format('M j, Y • g:i A') }}"
+                            >
+                                {{ $uploadDate->diffForHumans() }}
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
           </div>
         </div>
       </main>
@@ -196,6 +225,9 @@
       © 2025 Bicol University Board of Regents • All rights reserved.
     </footer>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>  
   <!-- Scripts -->
   <script>
     // Lucide Icons
@@ -227,10 +259,30 @@
     toggle.addEventListener('click', () => {
       html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+
+      // Replace span content each time
+      const iconContainer = document.getElementById('themeIcon');
+      iconContainer.innerHTML = "";
+      iconContainer.setAttribute("data-lucide", isDark ? "sun" : "moon");
       lucide.createIcons();
+
       localStorage.theme = isDark ? 'dark' : 'light';
     });
+
+    dayjs.extend(dayjs_plugin_relativeTime);
+
+    function refreshTimes() {
+        document.querySelectorAll('.time-ago').forEach(function(el) {
+            const timestamp = el.getAttribute('data-time');
+            if (timestamp) {
+                el.textContent = dayjs(timestamp).fromNow();
+            }
+        });
+    }
+
+    // Run immediately and then every 60s
+    refreshTimes();
+    setInterval(refreshTimes, 60000);
   </script>
   </body>
 </html>

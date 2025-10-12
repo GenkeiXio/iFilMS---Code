@@ -13,7 +13,7 @@ class StaffSeeder extends Seeder
         Staff::create([
             'name' => 'Prince Louis Jaylo',
             'username' => 'jayloprincelouis123@gmail.com',
-            'password' => Hash::make('plmj1101'),
+            'password' => Hash::make('plmj21'),
         ]);
         
         staff::create([

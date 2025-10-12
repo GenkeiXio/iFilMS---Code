@@ -76,82 +76,118 @@
           </div>
           <div class="flex items-center gap-3">
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
-              <i data-lucide="moon" id="themeIcon"></i>
+              <span id="themeIcon" data-lucide="moon"></span>
             </button>
           </div>
         </div>
 
         <!-- Filters and Search -->
         <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 mb-6 shadow-sm">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <form method="GET" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             
-            <!-- Search Input with Icon -->
+            <!-- Search Input -->
             <div class="relative w-full sm:w-1/2">
               <input 
                 type="text" 
+                name="search"
+                value="{{ request('search') }}"
                 placeholder="Search documents by title or tags..." 
                 class="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white text-sm">
-              <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+              <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
             </div>
 
             <!-- Filters -->
             <div class="flex gap-2">
-              <select class="px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
-                <option>All Categories</option>
-                <option>Transcriptions</option>
-                <option>Minutes</option>
-                <option>Excerpts</option>
-                <option>Secretary's Certification</option>
-                <option>Referendum</option>
-                <option>Board Resolution</option>
+              <select name="category" onchange="this.form.submit()" 
+                class="px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option value="all">All Categories</option>
+                <option value="Transcriptions" {{ request('category')=='Transcriptions' ? 'selected' : '' }}>Transcriptions</option>
+                <option value="Minutes" {{ request('category')=='Minutes' ? 'selected' : '' }}>Minutes</option>
+                <option value="Excerpts" {{ request('category')=='Excerpts' ? 'selected' : '' }}>Excerpts</option>
+                <option value="Secretary's Certification" {{ request('category')=="Secretary's Certification" ? 'selected' : '' }}>Secretary's Certification</option>
+                <option value="Referendum" {{ request('category')=='Referendum' ? 'selected' : '' }}>Referendum</option>
+                <option value="Board Resolution" {{ request('category')=='Board Resolution' ? 'selected' : '' }}>Board Resolution</option>
               </select>
 
-              <select class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
-                <option>Sort by Date</option>
-                <option>Sort by Name</option>
+              <select name="meeting_type" onchange="this.form.submit()" 
+                class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option value="all">Meeting Type</option>
+                <option value="Academic Council Meeting" {{ request('meeting_type')=='Academic Council Meeting' ? 'selected' : '' }}>Academic Council Meeting</option>
+                <option value="Administrative Council Meeting" {{ request('meeting_type')=='Administrative Council Meeting' ? 'selected' : '' }}>Administrative Council Meeting</option>
+                <option value="Board Meeting" {{ request('meeting_type')=='Board Meeting' ? 'selected' : '' }}>Board Meeting</option>
+              </select>
+
+              <select name="sort" onchange="this.form.submit()" 
+                class="px-1 py-2 border border-gray-300 dark:border-gray-600 rounded-xl dark:bg-gray-800 dark:text-white text-sm">
+                <option value="date" {{ request('sort')=='date' ? 'selected' : '' }}>Sort by Date</option>
+                <option value="name" {{ request('sort')=='name' ? 'selected' : '' }}>Sort by Name</option>
               </select>
             </div>
-          </div>
+          </form>
         </div>
 
         <!-- Results Table -->
-            <div class="border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-900 shadow-sm">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs font-semibold">
-                        <tr>
-                            <th class="px-6 py-3 text-left">Document Title</th>
-                            <th class="px-6 py-3 text-left">File Type</th>
-                            <th class="px-6 py-3 text-left">Date Uploaded</th>
-                            <th class="px-6 py-3 text-left">Uploaded By</th>
-                            <th class="px-6 py-3 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <!-- Placeholder row when no documents -->
-                    <tr>
-                        <td colspan="5" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400 italic">
-                            No documents yet
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-900 shadow-sm">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs font-semibold">
+              <tr>
+                <th class="px-6 py-3 text-left">Document Title</th>
+                <th class="px-6 py-3 text-left">Category</th>
+                <th class="px-6 py-3 text-left">Meeting Type</th>
+                <th class="px-6 py-3 text-left">File Type</th>
+                <th class="px-6 py-3 text-left">Date Uploaded</th>
+                <th class="px-6 py-3 text-left">Uploaded By</th>
+                <th class="px-6 py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              @forelse ($documents as $document)
+                <tr>
+                  <td class="px-6 py-3">{{ $document->title }}</td>
+                  <td class="px-6 py-3">{{ $document->category }}</td>
+                  <td class="px-6 py-3">{{ $document->meeting_type ?? '—' }}</td>
+                  <td class="px-6 py-3 uppercase">{{ $document->file_type }}</td>
+                  <td class="px-6 py-3">{{ $document->upload_date }}</td>
+                  <td class="px-6 py-3">{{ $document->staff->name ?? 'Unknown' }}</td>
+                  <td class="px-6 py-3 text-center flex justify-center gap-2">
+                    <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank"
+                      class="px-3 py-1 border rounded-lg bg-blue-500 text-white hover:bg-blue-600">View</a>
+                    <a href="{{ asset('storage/' . $document->file_path) }}" download
+                      class="px-3 py-1 border rounded-lg bg-green-500 text-white hover:bg-green-600">Download</a>
+                  </td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="7" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400 italic">
+                    No documents yet
+                  </td>
+                </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
 
-            <!-- Pagination -->
-            <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
-                <div>Rows Per Page 
-                    <select class="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button class="px-2 py-1 border rounded-lg">&laquo;</button>
-                        <span>Page 1 of 1</span>
-                    <button class="px-2 py-1 border rounded-lg">&raquo;</button>
-                </div>
-            </div>
+        <!-- Pagination -->
+        <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
+          <div>
+            Rows Per Page 
+            <form method="GET" class="inline">
+              <input type="hidden" name="search" value="{{ request('search') }}">
+              <input type="hidden" name="category" value="{{ request('category') }}">
+              <input type="hidden" name="meeting_type" value="{{ request('meeting_type') }}">
+              <input type="hidden" name="sort" value="{{ request('sort') }}">
+              <select name="per_page" onchange="this.form.submit()"
+                class="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white">
+                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+              </select>
+            </form>
+          </div>
+          <div class="flex items-center gap-2">
+            {{ $documents->appends(request()->query())->links() }}
+          </div>
+        </div>
       </main>
     </div>
 
@@ -191,8 +227,13 @@
     toggle.addEventListener('click', () => {
       html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      icon.setAttribute("data-lucide", isDark ? "sun" : "moon");
+
+      // Replace span content each time
+      const iconContainer = document.getElementById('themeIcon');
+      iconContainer.innerHTML = "";
+      iconContainer.setAttribute("data-lucide", isDark ? "sun" : "moon");
       lucide.createIcons();
+
       localStorage.theme = isDark ? 'dark' : 'light';
     });
   </script>

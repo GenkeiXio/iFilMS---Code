@@ -10,6 +10,9 @@ use App\Http\Controllers\ExcerptsController;
 use App\Http\Controllers\SecretaryCertificationController;
 use App\Http\Controllers\ReferendumController;
 use App\Http\Controllers\BoardResolutionController;
+use App\Http\Controllers\UploadController;
+use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\CategoriesController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -20,9 +23,8 @@ Route::post('/login', [StaffAuthController::class, 'login']);
 Route::post('/logout', [StaffAuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 });
 
 Route::middleware('guest')->group(function () {
@@ -33,89 +35,77 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/mainsidebar/documents', function () {
-        return view('MainSideBar.documents'); 
-    })->name('mainsidebar.documents');
+    Route::get('/mainsidebar/documents', [DocumentsController::class, 'index'])
+        ->name('mainsidebar.documents');
 });
 
 Route::middleware('auth:staff')->group(function () {
     Route::get('/mainsidebar/upload', function () {
         return view('MainSideBar.upload'); 
     })->name('mainsidebar.upload');
+
+    Route::post('/upload', [UploadController::class, 'store'])->name('upload.store');
 });
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/mainsidebar/categories', function () {
-        return view('MainSideBar.categories');
-    })->name('mainsidebar.categories');
+    Route::get('/mainsidebar/categories', [CategoriesController::class, 'index'])
+        ->name('mainsidebar.categories');
 });
 
 Route::middleware('auth:staff')->group(function () {
-    // Top-level Transcriptions landing
-    Route::get('/transcriptions', [TranscriptionController::class, 'index'])
+    // Transcriptions landing page
+    Route::get('/transcriptions', [App\Http\Controllers\TranscriptionController::class, 'index'])
         ->name('transcriptions.index');
 
-    // Subpages: academic-council, administrative-council, board-meetings
-    Route::get('/transcriptions/{category}', [TranscriptionController::class, 'list'])
-        ->whereIn('category', ['academic-council','administrative-council','board-meetings'])
+    // Subcategories
+    Route::get('/transcriptions/{category}', [App\Http\Controllers\TranscriptionController::class, 'list'])
+        ->whereIn('category', ['academic-council', 'administrative-council', 'board-meetings'])
         ->name('transcriptions.list');
-
-    // Upload POST endpoint (can be implemented later)
-    Route::post('/transcriptions/{category}/upload', [TranscriptionController::class, 'upload'])
-        ->whereIn('category', ['academic-council','administrative-council','board-meetings'])
-        ->name('transcriptions.upload');
 });
+
 
 Route::middleware('auth:staff')->group(function () {
     // Minutes landing
-    Route::get('/minutes', [MinutesController::class, 'index'])
+    Route::get('/minutes', [App\Http\Controllers\MinutesController::class, 'index'])
         ->name('minutes.index');
 
     // Minutes subpages
-    Route::get('/minutes/{category}', [MinutesController::class, 'list'])
-        ->whereIn('category', ['academic-council','administrative-council','board-meetings'])
+    Route::get('/minutes/{category}', [App\Http\Controllers\MinutesController::class, 'list'])
+        ->where('category', 'academic-council|administrative-council|board-meetings')
         ->name('minutes.list');
-
-    // Upload POST
-    Route::post('/minutes/{category}/upload', [MinutesController::class, 'upload'])
-        ->whereIn('category', ['academic-council','administrative-council','board-meetings'])
-        ->name('minutes.upload');
 });
 
 Route::middleware('auth:staff')->group(function () {
-    // Excerpts landing page
-    Route::get('/excerpts', [ExcerptsController::class, 'index'])
+    // Excerpts landing
+    Route::get('/excerpts', [App\Http\Controllers\ExcerptsController::class, 'index'])
         ->name('excerpts.index');
 
-    // Single subpage: Board Meetings
-    Route::get('/excerpts/board-meetings', [ExcerptsController::class, 'list'])
-        ->name('excerpts.board');
-
-    // Upload POST
-    Route::post('/excerpts/board-meetings/upload', [ExcerptsController::class, 'upload'])
-        ->name('excerpts.upload');
+    // Board Meeting Excerpts
+    Route::get('/excerpts/board', [App\Http\Controllers\ExcerptsController::class, 'list'])
+        ->name('excerpts.list');
 });
 
+
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/secretary-certification', [SecretaryCertificationController::class, 'index'])
+    Route::get('/secretary-certification', [App\Http\Controllers\SecretaryCertificationController::class, 'index'])
         ->name('secretary-certification.index');
 
-    Route::post('/secretary-certification/upload', [SecretaryCertificationController::class, 'upload'])
+    Route::post('/secretary-certification/upload', [App\Http\Controllers\SecretaryCertificationController::class, 'upload'])
         ->name('secretary-certification.upload');
 });
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/referendum', [ReferendumController::class, 'index'])
+    Route::get('/referendum', [App\Http\Controllers\ReferendumController::class, 'index'])
         ->name('referendum.index');
 
-    Route::post('/referendum/upload', [ReferendumController::class, 'upload'])
+    Route::post('/referendum/upload', [App\Http\Controllers\ReferendumController::class, 'upload'])
         ->name('referendum.upload');
 });
 
 Route::middleware('auth:staff')->group(function () {
-    Route::get('/board-resolution', [BoardResolutionController::class, 'index'])
+    Route::get('/board-resolution', [App\Http\Controllers\BoardResolutionController::class, 'index'])
         ->name('board-resolution.index');
 
-    Route::post('/board-resolution/upload', [BoardResolutionController::class, 'upload'])
+    Route::post('/board-resolution/upload', [App\Http\Controllers\BoardResolutionController::class, 'upload'])
         ->name('board-resolution.upload');
 });
