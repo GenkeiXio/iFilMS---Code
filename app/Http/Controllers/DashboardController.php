@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Document;
-use App\Models\Staff;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Total documents
+        // Totals
         $totalDocuments = Document::count();
 
         // Documents uploaded this month
@@ -25,17 +26,140 @@ class DashboardController extends Controller
         // Active users (staff who uploaded at least 1 document)
         $activeUsers = Document::distinct('staff_id')->count('staff_id');
 
-        // Recent activity (last 5 uploaded documents)
-        $recentActivity = Document::orderBy('upload_date', 'desc')
-            ->take(5)
+        // --- Get uploads
+        $uploads = DB::table('documents')
+            ->join('staff', 'documents.staff_id', '=', 'staff.staff_id')
+            ->select('staff.name', 'documents.title', 'documents.upload_date as date', DB::raw("'uploaded' as action"))
+            ->whereNull('documents.deleted_at');
+
+        // --- Get downloads
+        $downloads = DB::table('retrieval')
+            ->join('documents', 'retrieval.document_id', '=', 'documents.document_id')
+            ->join('staff', 'retrieval.staff_id', '=', 'staff.staff_id')
+            ->select('staff.name', 'documents.title', 'retrieval.retrieval_date as date', DB::raw("'downloaded' as action"));
+
+        // --- Get restores
+        $restores = DB::table('documents')
+            ->join('staff', 'documents.restored_by', '=', 'staff.staff_id')
+            ->select('staff.name', 'documents.title', 'documents.restored_at as date', DB::raw("'restored' as action"))
+            ->whereNotNull('documents.restored_at');
+
+        // --- Get deletions
+        $deletions = DB::table('storage')
+            ->join('documents', 'storage.document_id', '=', 'documents.document_id')
+            ->join('staff', 'storage.staff_id', '=', 'staff.staff_id')
+            ->select('staff.name', 'documents.title', 'storage.storage_date as date', DB::raw("'deleted' as action"));
+
+        // Merge all logs
+        $recentActivity = $uploads
+            ->unionAll($downloads)
+            ->unionAll($deletions)
+            ->unionAll($restores)
+            ->orderBy('date', 'desc')
+            ->limit(5)
             ->get();
+
+
+        // Staff name
+        $staffName = auth('staff')->user()->name ?? 'Staff';
+
+        // Read logs.txt (stored in storage/logs/logs.txt)
+        $logFilePath = storage_path('logs/logs.txt');
+        $logs = [];
+
+        if (File::exists($logFilePath)) {
+            $logLines = array_reverse(file($logFilePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+            $logs = array_slice($logLines, 0, 100); // Show only last 15 entries
+        }
+
+        // 📊 Monthly Uploads
+        $monthlyUploads = Document::select(
+                DB::raw('MONTH(upload_date) as month'),
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereYear('upload_date', now()->year)
+            ->groupBy(DB::raw('MONTH(upload_date)'))
+            ->pluck('total', 'month');
+
+        // 📊 Monthly Downloads
+        $monthlyDownloads = DB::table('retrieval')
+            ->select(
+                DB::raw('MONTH(retrieval_date) as month'),
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereYear('retrieval_date', now()->year)
+            ->groupBy(DB::raw('MONTH(retrieval_date)'))
+            ->pluck('total', 'month');
+
+        // Normalize months (Jan–Dec)
+        $months = collect(range(1, 12));
+
+        $uploadData = $months->map(fn ($m) => $monthlyUploads[$m] ?? 0);
+        $downloadData = $months->map(fn ($m) => $monthlyDownloads[$m] ?? 0);
 
         return view('dashboard', compact(
             'totalDocuments',
             'thisMonth',
             'categories',
             'activeUsers',
-            'recentActivity'
+            'recentActivity',
+            'staffName',
+            'logs',
+            'uploadData',
+            'downloadData'
         ));
+    }
+
+    // 🔥 AJAX ANALYTICS ENDPOINT
+    public function analyticsData(Request $request)
+    {
+        $range = $request->get('range', 'monthly');
+
+        if ($range === 'yearly') {
+            $years = collect(range(now()->year - 4, now()->year));
+
+            return response()->json([
+                'labels' => $years,
+                'uploads' => $years->map(fn ($y) =>
+                    Document::whereYear('upload_date', $y)->count()
+                ),
+                'downloads' => $years->map(fn ($y) =>
+                    DB::table('retrieval')->whereYear('retrieval_date', $y)->count()
+                ),
+            ]);
+        }
+
+        if ($range === 'quarterly') {
+            return response()->json([
+                'labels' => ['Q1','Q2','Q3','Q4'],
+                'uploads' => collect(range(1,4))->map(fn ($q) =>
+                    Document::whereYear('upload_date', now()->year)
+                        ->whereRaw('QUARTER(upload_date) = ?', [$q])
+                        ->count()
+                ),
+                'downloads' => collect(range(1,4))->map(fn ($q) =>
+                    DB::table('retrieval')
+                        ->whereYear('retrieval_date', now()->year)
+                        ->whereRaw('QUARTER(retrieval_date) = ?', [$q])
+                        ->count()
+                ),
+            ]);
+        }
+
+        // Monthly (default)
+        return response()->json([
+            'labels' => ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            'uploads' => collect(range(1,12))->map(fn ($m) =>
+                Document::whereYear('upload_date', now()->year)
+                    ->whereMonth('upload_date', $m)
+                    ->count()
+            ),
+            'downloads' => collect(range(1,12))->map(fn ($m) =>
+                DB::table('retrieval')
+                    ->whereYear('retrieval_date', now()->year)
+                    ->whereMonth('retrieval_date', $m)
+                    ->count()
+            ),
+        ]);
     }
 }

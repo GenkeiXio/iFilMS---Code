@@ -10,16 +10,18 @@ class StaffSeeder extends Seeder
 {
     public function run()
     {
-        Staff::create([
-            'name' => 'Prince Louis Jaylo',
-            'username' => 'jayloprincelouis123@gmail.com',
-            'password' => Hash::make('plmj21'),
-        ]);
-        
         staff::create([
-            'name' => 'Prince Louis',
-            'username' => 'plmj2022-6325-62187@bicol-u.edu.ph',
-            'password' => Hash::make('plmj0121')
+            'name' => 'Admin',
+            'username' => 'admin@bicol-u.edu.ph',
+            'password' => Hash::make('OUBSAdmin'),
+            'role' => 'admin'
+        ]);
+
+        staff::create([
+            'name' => 'Staff',
+            'username' => 'staff1@bicol-u.edu.ph',
+            'password' => Hash::make('OUBSStaff01'),
+            'role' => 'staff'
         ]);
     }
 }

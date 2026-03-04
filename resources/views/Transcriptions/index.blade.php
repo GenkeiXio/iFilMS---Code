@@ -21,6 +21,12 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      cursor: default !important;  /* Forces arrow pointer everywhere */
+      user-select: none;  /* Blocks text selection/editing on non-inputs */
+    }
+    input, textarea {
+      cursor: text !important;  /* Keeps I-beam in text fields */
+      user-select: text;  /* Allows selection in inputs */
     }
   </style>
 </head>
@@ -56,6 +62,10 @@
 
           <a href="{{ route('mainsidebar.categories') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
             <i data-lucide="folder-open"></i> Categories
+          </a>
+
+          <a href="{{ route('mainsidebar.recycle-bin') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+            <i data-lucide="recycle"></i> Recycle Bin
           </a>
 
           <hr class="my-3">
@@ -101,6 +111,10 @@
             <i data-lucide="folder-open"></i> Transcriptions
           </div>
           <div class="flex items-center gap-3">
+            <a href="{{ route('mainsidebar.categories') }}" 
+              class="p-2 border border-gray-300 dark:border-gray-600 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition"title="Go Back">
+              <i data-lucide="panel-right-open"></i>
+            </a>
             <button id="themeToggle" class="text-gray-600 dark:text-gray-300 cursor-pointer" title="Toggle Dark Mode">
               <span id="themeIcon" data-lucide="moon"></span>
             </button>
@@ -221,6 +235,28 @@
         </div>
       </main>
     </div>
+
+    @if(isset($noPermission) && $noPermission)
+    <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-96 text-center shadow-xl">
+            <i data-lucide="lock" class="mx-auto w-10 h-10 text-red-500 mb-4"></i>
+
+            <h2 class="text-lg font-semibold mb-2">
+                Access Restricted
+            </h2>
+
+            <p class="text-sm text-gray-500 mb-6">
+                You do not have permission to view, download, or delete documents.
+                Please contact an administrator.
+            </p>
+
+            <a href="{{ route('dashboard') }}"
+              class="inline-block px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                Go Back
+            </a>
+        </div>
+    </div>
+    @endif
 
     <!-- Footer -->
     <footer class="text-center py-4 text-xs text-gray-400 dark:text-gray-500">

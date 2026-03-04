@@ -21,6 +21,12 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      cursor: default !important;  /* Forces arrow pointer everywhere */
+      user-select: none;  /* Blocks text selection/editing on non-inputs */
+    }
+    input, textarea {
+      cursor: text !important;  /* Keeps I-beam in text fields */
+      user-select: text;  /* Allows selection in inputs */
     }
   </style>
 </head>
@@ -59,6 +65,22 @@
           </a>
 
           <hr class="my-3">
+
+          @auth('staff')
+            @if(Auth::guard('staff')->user()->isAdmin())
+              <a href="{{ route('mainsidebar.recycle-bin') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+                <i data-lucide="recycle"></i> Recycle Bin
+              </a>
+            @endif
+          @endauth
+
+          @auth('staff')
+            @if(Auth::guard('staff')->user()->isAdmin())
+              <a href="{{ route('admin.users') }}" class="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-800/40 transition">
+                <i data-lucide="users"></i> User Management
+              </a>
+            @endif
+          @endauth
 
           <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="flex items-center gap-2 px-3 text-gray-700 dark:text-gray-100">
             <i data-lucide="log-out"></i> LogOut

@@ -4,6 +4,8 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background-color: #f5f7fa;
   color: #333;
+  cursor: default !important;  /* Forces arrow pointer everywhere */
+  user-select: none;  /* Blocks text selection/editing on non-inputs */
 }
 
 /* ===== Header ===== */
@@ -174,70 +176,6 @@ body {
   color: #007bff;
 }
 
-/* ===== Modal ===== */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* dimmed backdrop */
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* ✅ Solid white modal box */
-.modal-content {
-  background-color: #ffffff !important; /* force solid white */
-  opacity: 1 !important; /* remove any inherited transparency */
-  padding: 1.8rem 2rem;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  max-width: 380px;
-  width: 90%;
-  margin: 0 auto;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.modal-content h2 {
-  color: #111;
-  margin-bottom: 0.5rem;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.modal-content p {
-  color: #333;
-  font-size: 0.95rem;
-  margin-bottom: 1.2rem;
-}
-
-.modal-content button {
-  background: lightskyblue;
-  border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  font-weight: 500;
-  color: #000;
-  transition: background 0.3s ease;
-}
-
-.modal-content button:hover {
-  background: #f7941e;
-  color: #fff;
-}
-
-/* Subtle zoom effect */
-.modal-overlay.show .modal-content {
-  transform: scale(1.02);
-  opacity: 1;
-}
-
 /* ===== Footer ===== */
 .footer {
   background: #f9f9f9;
@@ -326,3 +264,165 @@ body {
   }
 }
 
+/* ===== Universal Modal Overlay ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* ===== Common Modal Base ===== */
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  text-align: center;
+  padding: 1.8rem 2rem;
+  width: 90%;
+  max-width: 380px;
+  animation: fadeIn 0.4s ease forwards;
+  background-color: #e8f5e9 !important; /* or your preferred color */
+  opacity: 1 !important;
+  border-radius: 20px !important;       /* smooth rounded corners */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* subtle shadow for pop-out effect */
+}
+
+/* ===== Success Modal ===== */
+.success-modal {
+  background-color: #e8f5e9 !important;
+  opacity: 1 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.2); /* green-tinted glow */
+}
+
+.checkmark-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* ✅ Checkmark Animation */
+.checkmark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #28a745;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #28a745;
+  animation: fillGreen 0.4s ease-in-out 0.4s forwards, popIn 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark-circle {
+  stroke: #28a745;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+/* Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #c8e6c9;
+  border-top-color: #28a745;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 10px auto 0;
+}
+
+/* ===== Error Modal ===== */
+.error-modal {
+  background-color: #fdecea !important;
+  opacity: 1 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(220, 53, 69, 0.2);
+}
+
+.error-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* ❌ Cross Animation */
+.error-mark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  stroke-width: 2;
+  stroke: #dc3545;
+  stroke-miterlimit: 10;
+  animation: fillRed 0.4s ease-in-out 0.4s forwards, popIn 0.3s ease-in-out 0.9s both;
+}
+
+.error-circle {
+  stroke: #dc3545;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.error-cross {
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+/* Button */
+.error-modal button {
+  background: #dc3545;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #000;
+  transition: background 0.3s ease;
+}
+
+.error-modal button:hover {
+  background: #b02a37;
+  color: #000;
+}
+
+/* Animations */
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+@keyframes fillGreen { 100% { box-shadow: inset 0 0 0 50px #28a745; } }
+@keyframes fillRed { 100% { box-shadow: inset 0 0 0 50px #dc3545; } }
+@keyframes popIn { 0%,100% { transform:none; } 50% { transform:scale(1.1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+@keyframes fadeOut { from { opacity:1; transform:scale(1); } to { opacity:0; transform:scale(0.95); } }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+}
